@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monticello - Simple & Modern</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <img src="./assets/img/Logo.svg" alt="Monticello" class="logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#about">ABOUT US</a></li>
+                <li><a href="#projects">PROJECTS</a></li>
+                <li><a href="#news">NEWS</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <img src="./assets/img/logo_facebook.svg" alt="Facebook" class="social-icon">
+                </a>
+                <a href="#" class="social-link">
+                    <img src="./assets/img/logo_twitter.svg" alt="Twitter" class="social-icon">
+                </a>
+                <a href="#" class="social-link">
+                    <img src="./assets/img/logo_instagram.svg" alt="Instagram" class="social-icon">
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">SIMPLE & MODERN</h1>
+            <p class="hero-subtitle">WE MAKE THE WORLD BEAUTIFUL EVERYDAY</p>
+        </div>        <button class="hero-btn" onclick="scrollToSection('what-we-do')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </section>
+
+    <section class="what-we-do" id="what-we-do">
+        <div class="container">
+            <h2 class="section-title">WHAT WE DO</h2>
+            
+            <div class="services">
+                <div class="service-item">
+                    <div class="service-visual">
+                        <div class="geometric-bg geometric-bg-blue"></div>
+                        <div class="service-image">
+                            <img src="./assets/img/trade_center.jpg" alt="Trade Center">
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <span class="service-label">ONE WORLD</span>
+                        <h3 class="service-title">TRADE CENTER</h3>
+                        <p class="service-description">
+                            Increasing prosperity in our lives can be accomplished 
+                            by having the right frame of mind. The truth is, our 
+                            thoughts are very powerful.
+                        </p>
+                        <button class="service-btn" onclick="toggleDetails('trade-center')">MORE DETAILS</button>
+                        <div class="service-location">
+                            <span class="location-icon">📍</span>
+                            New York City, United States - 1776 feet
+                        </div>
+                        <div class="service-details" id="trade-center-details">
+                            <div class="details-content">
+                                <h4 class="details-title">Project Overview</h4>
+                                <p class="details-text">
+                                    The One World Trade Center stands as a beacon of resilience and renewal. 
+                                    This architectural marvel reaches 1,776 feet into the sky, symbolizing 
+                                    the year of American independence.
+                                </p>
+                                <div class="details-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number">104</span>
+                                        <span class="stat-label">Floors</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">3M</span>
+                                        <span class="stat-label">Sq. Feet</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">2014</span>
+                                        <span class="stat-label">Completed</span>
+                                    </div>
+                                </div>
+                                <div class="details-features">
+                                    <h5>Key Features:</h5>
+                                    <ul>
+                                        <li>Advanced security systems</li>
+                                        <li>Sustainable design (LEED Gold)</li>
+                                        <li>Panoramic city views</li>
+                                        <li>State-of-the-art elevators</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-item reverse">
+                    <div class="service-content">
+                        <span class="service-label">INTERNATIONAL</span>
+                        <h3 class="service-title">COMMERCE CENTRE</h3>
+                        <p class="service-description">
+                            Successful businesses have many things in common, 
+                            today we'll look at the big 10 of them and show 
+                            a digital advertising network may help.
+                        </p>
+                        <button class="service-btn" onclick="toggleDetails('commerce-centre')">MORE DETAILS</button>
+                        <div class="service-location">
+                            <span class="location-icon">📍</span>
+                            Hong Kong - 1139 Abstr
+                        </div>
+                        <div class="service-details" id="commerce-centre-details">
+                            <div class="details-content">
+                                <h4 class="details-title">Business Hub</h4>
+                                <p class="details-text">
+                                    Located in the heart of Hong Kong's financial district, this commerce centre 
+                                    represents the pinnacle of modern business architecture. Designed to foster 
+                                    international trade and collaboration.
+                                </p>
+                                <div class="details-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number">45</span>
+                                        <span class="stat-label">Floors</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">2.5M</span>
+                                        <span class="stat-label">Sq. Feet</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">2018</span>
+                                        <span class="stat-label">Completed</span>
+                                    </div>
+                                </div>
+                                <div class="details-features">
+                                    <h5>Business Amenities:</h5>
+                                    <ul>
+                                        <li>Conference & meeting facilities</li>
+                                        <li>High-speed internet infrastructure</li>
+                                        <li>Multi-language support services</li>
+                                        <li>24/7 business concierge</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-visual">
+                        <div class="geometric-bg geometric-bg-purple"></div>
+                        <div class="service-image">
+                            <img src="./assets/img/commerce_centre.jpg" alt="Commerce Centre">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="news">
+        <div class="container">
+            <h2 class="section-title white">LATEST NEWS</h2>
+            
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="./assets/img/img_brun.jpg" alt="News 1">
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">SEE THE UNMATCHED BEAUTY OF THE GREAT.</h3>
+                        <p class="news-excerpt">
+                            Free directories: directories are perfect 
+                            for customers that are searching for...
+                        </p>
+                        <div class="news-author">
+                            <img src="./assets/img/avatar_brun.jpg" alt="Alja Brun" class="author-avatar">
+                            <span class="author-name">ALJA BRUN</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="./assets/img/img_freeman.jpg" alt="News 2">
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">EFFECTIVE ADVERTISING POINTERS.</h3>
+                        <p class="news-excerpt">
+                            Having a home based business is a 
+                            wonderful asset to your life...
+                        </p>
+                        <div class="news-author">
+                            <img src="./assets/img/avatar_freeman.jpg" alt="Dominic Freeman" class="author-avatar">
+                            <span class="author-name">DOMINIC FREEMAN</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="./assets/img/img_wrd.jpg" alt="News 3">
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">HYPNOTIZE YOURSELF INTO THE GHOST.</h3>
+                        <p class="news-excerpt">
+                            There are many things that are 
+                            important to catalog design...
+                        </p>
+                        <div class="news-author">
+                            <img src="./assets/img/avatar_ward.jpg" alt="Alice Ward" class="author-avatar">
+                            <span class="author-name">ALICE WARD</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="pagination">
+                <span class="page-dot active"></span>
+                <span class="page-dot"></span>
+                <span class="page-dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
