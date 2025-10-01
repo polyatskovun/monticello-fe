@@ -51,20 +51,129 @@ function toggleDetails(projectId) {
 }
 
 /**
- * Ініціалізація після завантаження DOM
+ * Додавання функціональності збільшення зображення при натисканні
+ * @param {HTMLElement} galleryItem - Елемент галереї
  */
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Monticello website loaded successfully');
+function addZoomOnClick(galleryItem) {
+    const img = galleryItem.querySelector('img');
+    let isPressed = false;
+    let zoomTimeout;
     
-    // Додаткова функціональність для навігації
-    initNavigation();
+    if (!img) return;
     
-    // Ініціалізація соціальних посилань
-    initSocialLinks();
+    // Обробка натискання миші
+    galleryItem.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        isPressed = true;
+        
+        const rect = galleryItem.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        // Встановлюємо точку трансформації
+        img.style.transformOrigin = `${x}% ${y}%`;
+        
+        // Починаємо збільшення через невелику затримку
+        zoomTimeout = setTimeout(() => {
+            if (isPressed) {
+                img.style.transform = 'scale(1.5)';
+                img.style.transition = 'transform 0.3s ease';
+                galleryItem.style.zIndex = '100';
+                console.log(`🔍 Збільшення зображення в точці: ${x.toFixed(1)}%, ${y.toFixed(1)}%`);
+            }
+        }, 200);
+    });
     
-    // Ініціалізація кнопок деталей
-    initDetailsButtons();
-});
+    // Обробка відпускання миші
+    function handleMouseUp() {
+        if (isPressed) {
+            isPressed = false;
+            clearTimeout(zoomTimeout);
+            
+            img.style.transform = 'scale(1)';
+            img.style.transition = 'transform 0.3s ease';
+            galleryItem.style.zIndex = '';
+            
+            console.log('🔍 Збільшення скасовано');
+        }
+    }
+    
+    // Слухачі для різних випадків відпускання
+    galleryItem.addEventListener('mouseup', handleMouseUp);
+    galleryItem.addEventListener('mouseleave', handleMouseUp);
+    document.addEventListener('mouseup', handleMouseUp);
+    
+    // Запобігаємо перетягування зображення
+    img.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+}
+
+/**
+ * Ініціалізація галереї
+ */
+function initGallery() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    galleryItems.forEach(item => {
+        // Додаємо функціональність збільшення при натисканні
+        addZoomOnClick(item);
+    });
+    
+    console.log('🎨 Галерея ініціалізована з функцією збільшення');
+}
+
+/**
+ * Завантаження додаткових елементів галереї
+ */
+function loadMoreGalleryItems() {
+    const galleryGrid = document.querySelector('.gallery-grid');
+    const seeMoreBtn = document.querySelector('.see-more-btn');
+    
+    // Створюємо додаткові елементи галереї
+    const additionalItems = [
+        { src: './assets/img/gallery-6.jpg', alt: 'Skyscraper' },
+        { src: './assets/img/gallery-7.jpg', alt: 'Modern Complex' },
+        { src: './assets/img/gallery-8.jpg', alt: 'Business Center' },
+        { src: './assets/img/gallery-9.jpg', alt: 'Urban Architecture' }
+    ];
+    
+    additionalItems.forEach((item, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.innerHTML = `
+            <img src="${item.src}" alt="${item.alt}">
+            <div class="gallery-zoom-overlay">
+                <img src="./assets/img/bi_zoom.png" alt="Zoom" class="zoom-icon">
+            </div>
+        `;
+        
+        // Додаємо функціональність збільшення для нових елементів
+        addZoomOnClick(galleryItem);
+        
+        // Додаємо анімацію появи
+        galleryItem.style.opacity = '0';
+        galleryItem.style.transform = 'translateY(20px)';
+        
+        galleryGrid.appendChild(galleryItem);
+        
+        // Анімація появи з затримкою
+        setTimeout(() => {
+            galleryItem.style.transition = 'all 0.5s ease';
+            galleryItem.style.opacity = '1';
+            galleryItem.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Ховаємо кнопку після завантаження
+    seeMoreBtn.style.transform = 'scale(0)';
+    seeMoreBtn.style.opacity = '0';
+    setTimeout(() => {
+        seeMoreBtn.style.display = 'none';
+    }, 300);
+    
+    console.log('🖼️ Додаткові елементи галереї завантажено');
+}
 
 /**
  * Ініціалізація кнопок деталей проектів
@@ -166,3 +275,22 @@ function initScrollAnimations() {
 
 // Ініціалізуємо анімації прокрутки після завантаження
 document.addEventListener('DOMContentLoaded', initScrollAnimations);
+
+/**
+ * Ініціалізація після завантаження DOM
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Monticello website loaded successfully');
+    
+    // Додаткова функціональність для навігації
+    initNavigation();
+    
+    // Ініціалізація соціальних посилань
+    initSocialLinks();
+    
+    // Ініціалізація кнопок деталей
+    initDetailsButtons();
+    
+    // Ініціалізація галереї
+    initGallery();
+});
