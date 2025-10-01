@@ -273,8 +273,255 @@ function initScrollAnimations() {
     animatedElements.forEach(el => observer.observe(el));
 }
 
-// Ініціалізуємо анімації прокрутки після завантаження
-document.addEventListener('DOMContentLoaded', initScrollAnimations);
+/**
+ * Глобальна змінна для карти
+ */
+let map = null;
+let userMarker = null;
+
+/**
+ * Ініціалізація карти
+ */
+function initMap() {
+    // Створюємо карту з центром у Києві (за замовчуванням)
+    map = L.map('map').setView([50.4501, 30.5234], 10);
+    
+    // Додаємо шар карти
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(map);
+    
+    console.log('🗺️ Карта ініціалізована');
+}
+
+/**
+ * Ініціалізація секції місцезнаходження
+ */
+function initLocationSection() {
+    // Ініціалізуємо карту після завантаження бібліотеки Leaflet
+    if (typeof L !== 'undefined') {
+        initMap();
+        console.log('🗺️ Секція місцезнаходження ініціалізована');
+        
+        // Автоматично отримуємо місцезнаходження при завантаженні сторінки
+        setTimeout(() => {
+            getCurrentLocation();
+        }, 500); // Невелика затримка для ініціалізації карти
+    } else {
+        console.error('❌ Бібліотека Leaflet не завантажена');
+    }
+}
+
+/**
+ * Отримання поточного місцезнаходження користувача
+ */
+function getCurrentLocation() {
+    // Перевіряємо підтримку геолокації
+    if (!navigator.geolocation) {
+        console.error('❌ Геолокація не підтримується');
+        // Показуємо карту з центром у Києві як fallback
+        if (map) {
+            map.setView([50.4501, 30.5234], 10);
+        }
+        return;
+    }
+    
+    console.log('🔍 Автоматичний пошук місцезнаходження користувача...');
+    
+    // Опції для геолокації
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 300000
+    };
+    
+    // Отримуємо координати
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            console.log(`📍 Місцезнаходження автоматично знайдено: ${lat.toFixed(6)}, ${lng.toFixed(6)} (точність: ${accuracy}м)`);
+            
+            // Оновлюємо карту
+            updateMapLocation(lat, lng, accuracy);
+            
+            // Додаємо маркери найближчих проектів
+            addNearbyProjects(lat, lng);
+        },
+        function(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    console.error('❌ Користувач заборонив доступ до геолокації');
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    console.error('❌ Місцезнаходження недоступне');
+                    break;
+                case error.TIMEOUT:
+                    console.error('❌ Таймаут при отриманні місцезнаходження');
+                    break;
+                default:
+                    console.error('❌ Невідома помилка геолокації:', error.message);
+                    break;
+            }
+            
+            // Показуємо карту з центром у Києві як fallback
+            if (map) {
+                map.setView([50.4501, 30.5234], 10);
+                console.log('🗺️ Показано карту з центром у Києві (fallback)');
+            }
+        },
+        options
+    );
+}
+
+/**
+ * Оновлення позиції на карті
+ */
+function updateMapLocation(lat, lng, accuracy) {
+    if (!map) {
+        console.error('❌ Карта не ініціалізована');
+        return;
+    }
+    
+    // Видаляємо попередній маркер користувача
+    if (userMarker) {
+        map.removeLayer(userMarker);
+    }
+    
+    // Додаємо новий маркер користувача з анімованим піном
+    userMarker = L.marker([lat, lng], {
+        icon: L.divIcon({
+            className: 'user-location-marker',
+            html: '<div class="user-location-pin"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        })
+    }).addTo(map);
+    
+    // Додаємо popup з інформацією
+    userMarker.bindPopup(`
+        <div style="text-align: center; padding: 10px;">
+            <strong style="color: #7E5AFF;">📍 Ваше місцезнаходження</strong><br>
+            <small style="color: #666;">Точність: ${Math.round(accuracy)}м</small><br>
+            <small style="color: #999; font-size: 0.8em;">Клікніть на пін для більш детальної інформації</small>
+        </div>
+    `).openPopup();
+    
+    // Додаємо коло точності з фіолетовим кольором
+    L.circle([lat, lng], {
+        radius: accuracy,
+        color: '#7E5AFF',
+        fillColor: '#7E5AFF',
+        fillOpacity: 0.1,
+        weight: 2,
+        opacity: 0.6
+    }).addTo(map);
+    
+    // Центруємо карту на позиції користувача
+    map.setView([lat, lng], 15);
+    
+    console.log(`🗺️ Карта оновлена для координат: ${lat}, ${lng} з анімованим піном`);
+}
+
+/**
+ * Отримання адреси з координат (reverse geocoding)
+ */
+async function getAddressFromCoordinates(lat, lng) {
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`
+        );
+        
+        if (!response.ok) {
+            throw new Error('Помилка при отриманні адреси');
+        }
+        
+        const data = await response.json();
+        
+        if (data && data.display_name) {
+            document.getElementById('address').textContent = 
+                `Адреса: ${data.display_name}`;
+            console.log('📍 Адреса отримана:', data.display_name);
+        } else {
+            document.getElementById('address').textContent = 
+                'Адреса: Не вдалося визначити';
+        }
+    } catch (error) {
+        console.error('❌ Помилка при отриманні адреси:', error);
+        document.getElementById('address').textContent = 
+            'Адреса: Помилка при отриманні';
+    }
+}
+
+/**
+ * Додавання маркерів найближчих проектів
+ */
+function addNearbyProjects(userLat, userLng) {
+    if (!map) return;
+    
+    // Приклади проектів
+    const projects = [
+        {
+            name: 'Trade Center',
+            lat: userLat + 0.01,
+            lng: userLng + 0.01,
+            description: 'Сучасний торговий центр'
+        },
+        {
+            name: 'Business Complex',
+            lat: userLat - 0.015,
+            lng: userLng + 0.02,
+            description: 'Бізнес-комплекс преміум класу'
+        },
+        {
+            name: 'Residential Tower',
+            lat: userLat + 0.02,
+            lng: userLng - 0.01,
+            description: 'Житловий комплекс'
+        }
+    ];
+    
+    projects.forEach(project => {
+        const distance = calculateDistance(userLat, userLng, project.lat, project.lng);
+        
+        const projectMarker = L.marker([project.lat, project.lng], {
+            icon: L.divIcon({
+                className: 'project-marker',
+                html: '🏢',
+                iconSize: [25, 25],
+                iconAnchor: [12, 12]
+            })
+        }).addTo(map);
+        
+        projectMarker.bindPopup(`
+            <div style="text-align: center; min-width: 150px;">
+                <strong>${project.name}</strong><br>
+                <small>${project.description}</small><br>
+                <small style="color: #666;">Відстань: ${distance.toFixed(1)} км</small>
+            </div>
+        `);
+        
+        console.log(`🏢 Додано проект: ${project.name} (${distance.toFixed(1)} км)`);
+    });
+}
+
+/**
+ * Розрахунок відстані між двома точками
+ */
+function calculateDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371; // Радіус Землі в км
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
 
 /**
  * Ініціалізація після завантаження DOM
@@ -293,4 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Ініціалізація галереї
     initGallery();
+    
+    // Ініціалізація секції місцезнаходження
+    setTimeout(initLocationSection, 100); // Невелика затримка для завантаження Leaflet
 });

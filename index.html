@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monticello - Simple & Modern</title>
     <link rel="stylesheet" href="./css/style.css">
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 <body>
     <header class="header">
@@ -271,6 +273,15 @@
         </div>
     </section>
 
+    <section class="location" id="location">
+        <div class="container">
+            <h2 class="section-title">YOUR LOCATION</h2>
+            <div id="map" class="map"></div>
+        </div>
+    </section>
+
+    <!-- Leaflet JavaScript for maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="./js/script.js"></script>
 </body>
 </html>
