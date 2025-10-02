@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monticello - Simple & Modern</title>
     <link rel="stylesheet" href="./css/style.css">
     <!-- Leaflet CSS for maps -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
+
 <body>
     <header class="header">
         <nav class="navbar">
@@ -38,9 +41,10 @@
         <div class="hero-content">
             <h1 class="hero-title">SIMPLE & MODERN</h1>
             <p class="hero-subtitle">WE MAKE THE WORLD BEAUTIFUL EVERYDAY</p>
-        </div>        <button class="hero-btn" onclick="scrollToSection('what-we-do')">
+        </div> <button class="hero-btn" onclick="scrollToSection('what-we-do')">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
             </svg>
         </button>
     </section>
@@ -48,7 +52,7 @@
     <section class="what-we-do" id="what-we-do">
         <div class="container">
             <h2 class="section-title">WHAT WE DO</h2>
-            
+
             <div class="services">
                 <div class="service-item">
                     <div class="service-visual">
@@ -61,8 +65,8 @@
                         <span class="service-label">ONE WORLD</span>
                         <h3 class="service-title">TRADE CENTER</h3>
                         <p class="service-description">
-                            Increasing prosperity in our lives can be accomplished 
-                            by having the right frame of mind. The truth is, our 
+                            Increasing prosperity in our lives can be accomplished
+                            by having the right frame of mind. The truth is, our
                             thoughts are very powerful.
                         </p>
                         <button class="service-btn" onclick="toggleDetails('trade-center')">MORE DETAILS</button>
@@ -74,8 +78,8 @@
                             <div class="details-content">
                                 <h4 class="details-title">Project Overview</h4>
                                 <p class="details-text">
-                                    The One World Trade Center stands as a beacon of resilience and renewal. 
-                                    This architectural marvel reaches 1,776 feet into the sky, symbolizing 
+                                    The One World Trade Center stands as a beacon of resilience and renewal.
+                                    This architectural marvel reaches 1,776 feet into the sky, symbolizing
                                     the year of American independence.
                                 </p>
                                 <div class="details-stats">
@@ -111,8 +115,8 @@
                         <span class="service-label">INTERNATIONAL</span>
                         <h3 class="service-title">COMMERCE CENTRE</h3>
                         <p class="service-description">
-                            Successful businesses have many things in common, 
-                            today we'll look at the big 10 of them and show 
+                            Successful businesses have many things in common,
+                            today we'll look at the big 10 of them and show
                             a digital advertising network may help.
                         </p>
                         <button class="service-btn" onclick="toggleDetails('commerce-centre')">MORE DETAILS</button>
@@ -124,8 +128,8 @@
                             <div class="details-content">
                                 <h4 class="details-title">Business Hub</h4>
                                 <p class="details-text">
-                                    Located in the heart of Hong Kong's financial district, this commerce centre 
-                                    represents the pinnacle of modern business architecture. Designed to foster 
+                                    Located in the heart of Hong Kong's financial district, this commerce centre
+                                    represents the pinnacle of modern business architecture. Designed to foster
                                     international trade and collaboration.
                                 </p>
                                 <div class="details-stats">
@@ -168,7 +172,7 @@
     <section class="news">
         <div class="container">
             <h2 class="section-title white">LATEST NEWS</h2>
-            
+
             <div class="news-grid">
                 <article class="news-card">
                     <div class="news-image">
@@ -177,7 +181,7 @@
                     <div class="news-content">
                         <h3 class="news-title">SEE THE UNMATCHED BEAUTY OF THE GREAT.</h3>
                         <p class="news-excerpt">
-                            Free directories: directories are perfect 
+                            Free directories: directories are perfect
                             for customers that are searching for...
                         </p>
                         <div class="news-author">
@@ -194,7 +198,7 @@
                     <div class="news-content">
                         <h3 class="news-title">EFFECTIVE ADVERTISING POINTERS.</h3>
                         <p class="news-excerpt">
-                            Having a home based business is a 
+                            Having a home based business is a
                             wonderful asset to your life...
                         </p>
                         <div class="news-author">
@@ -211,7 +215,7 @@
                     <div class="news-content">
                         <h3 class="news-title">HYPNOTIZE YOURSELF INTO THE GHOST.</h3>
                         <p class="news-excerpt">
-                            There are many things that are 
+                            There are many things that are
                             important to catalog design...
                         </p>
                         <div class="news-author">
@@ -233,7 +237,7 @@
     <section class="gallery" id="gallery">
         <div class="container">
             <h2 class="section-title">GALLERY</h2>
-            
+
             <div class="gallery-grid">
                 <div class="gallery-item gallery-item-large">
                     <img src="./assets/img/gallery1.png" alt="Modern Architecture">
@@ -266,7 +270,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="gallery-actions">
                 <button class="see-more-btn" onclick="loadMoreGalleryItems()">SEE MORE</button>
             </div>
@@ -276,36 +280,60 @@
     <section class="location" id="location">
         <div class="container">
             <h2 class="section-title">YOUR LOCATION</h2>
-            <div id="map" class="map"></div>
+            <div class="map-container">
+                <div id="map" class="map"></div>
+                <button class="location-btn" id="locationBtn" onclick="getCurrentLocation()"
+                    title="Знайти моє місцезнаходження">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L19 5V4C19 2.34 17.66 1 16 1H8C6.34 1 5 2.34 5 4V5L3 7V9H5V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V9H21ZM17 20H7V9H17V20ZM12 11C10.34 11 9 12.34 9 14S10.34 17 12 17 15 15.66 15 14 13.66 11 12 11ZM12 15C11.45 15 11 14.55 11 14S11.45 13 12 13 13 13.45 13 14 12.55 15 12 15Z"
+                            fill="currentColor" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </section>
 
     <section class="contact" id="contact">
         <div class="container">
-            <h2 class="section-title">GET IN TOUCH</h2>
-            
             <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-text">91 Nolan Extensions Suite 670</div>
-                        <div class="contact-text">+001 356-868-2454</div>
-                        <div class="contact-text">montichello@service.com</div>
-                        <div class="contact-text">From 07:05AM to 19:30PM</div>
+                <h2 class="section-title">GET IN TOUCH</h2>
+                <div class="flex-container">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-text">91 Nolan Extensions Suite 670</div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-text">+001 356-868-2454</div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-text">montichello@service.com</div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-text">From 07:05AM to 19:30PM</div>
+                        </div>
+                    </div>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="" required>
+                            <label for="name">Name</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="" required>
+                            <label for="email">Email</label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">SUBMIT</button>
+                    </form>
+
                 </div>
-                
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="" required>
-                        <label for="name">Name</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="" required>
-                        <label for="email">Email</label>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">SUBMIT</button>
-                </form>
+
+
+
             </div>
         </div>
     </section>
@@ -316,11 +344,11 @@
                 <div class="footer-logo">
                     <img src="./assets/img/Logo.svg" alt="Monticello" class="logo">
                 </div>
-                
+
                 <div class="footer-copyright">
                     <p>Copyrights © 2020 Monticello</p>
                 </div>
-                
+
                 <div class="footer-social">
                     <a href="#" class="footer-social-link">
                         <img src="./assets/img/logo_facebook.svg" alt="Facebook" class="footer-social-icon">
@@ -336,7 +364,9 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="./js/script.js"></script>
 </body>
+
 </html>

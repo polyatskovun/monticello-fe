@@ -296,38 +296,25 @@ function initMap() {
 }
 
 /**
- * Ініціалізація секції місцезнаходження
- */
-function initLocationSection() {
-    // Ініціалізуємо карту після завантаження бібліотеки Leaflet
-    if (typeof L !== 'undefined') {
-        initMap();
-        console.log('🗺️ Секція місцезнаходження ініціалізована');
-        
-        // Автоматично отримуємо місцезнаходження при завантаженні сторінки
-        setTimeout(() => {
-            getCurrentLocation();
-        }, 500); // Невелика затримка для ініціалізації карти
-    } else {
-        console.error('❌ Бібліотека Leaflet не завантажена');
-    }
-}
-
-/**
  * Отримання поточного місцезнаходження користувача
  */
 function getCurrentLocation() {
+    const locationBtn = document.getElementById('locationBtn');
+    
     // Перевіряємо підтримку геолокації
     if (!navigator.geolocation) {
         console.error('❌ Геолокація не підтримується');
-        // Показуємо карту з центром у Києві як fallback
-        if (map) {
-            map.setView([50.4501, 30.5234], 10);
-        }
+        showLocationError('Геолокація не підтримується вашим браузером');
         return;
     }
     
-    console.log('🔍 Автоматичний пошук місцезнаходження користувача...');
+    // Додаємо стан завантаження до кнопки
+    if (locationBtn) {
+        locationBtn.classList.add('loading');
+        locationBtn.disabled = true;
+    }
+    
+    console.log('🔍 Пошук місцезнаходження користувача...');
     
     // Опції для геолокації
     const options = {
@@ -343,26 +330,41 @@ function getCurrentLocation() {
             const lng = position.coords.longitude;
             const accuracy = position.coords.accuracy;
             
-            console.log(`📍 Місцезнаходження автоматично знайдено: ${lat.toFixed(6)}, ${lng.toFixed(6)} (точність: ${accuracy}м)`);
+            console.log(`📍 Місцезнаходження знайдено: ${lat.toFixed(6)}, ${lng.toFixed(6)} (точність: ${accuracy}м)`);
             
             // Оновлюємо карту
             updateMapLocation(lat, lng, accuracy);
             
             // Додаємо маркери найближчих проектів
             addNearbyProjects(lat, lng);
+            
+            // Видаляємо стан завантаження
+            if (locationBtn) {
+                locationBtn.classList.remove('loading');
+                locationBtn.disabled = false;
+            }
+            
+            // Показуємо повідомлення про успіх
+            showLocationSuccess('Місцезнаходження знайдено успішно!');
         },
         function(error) {
+            let errorMessage = '';
+            
             switch(error.code) {
                 case error.PERMISSION_DENIED:
+                    errorMessage = 'Доступ до геолокації заборонено. Будь ласка, дозвольте доступ в налаштуваннях браузера.';
                     console.error('❌ Користувач заборонив доступ до геолокації');
                     break;
                 case error.POSITION_UNAVAILABLE:
+                    errorMessage = 'Місцезнаходження недоступне. Перевірте підключення до інтернету.';
                     console.error('❌ Місцезнаходження недоступне');
                     break;
                 case error.TIMEOUT:
+                    errorMessage = 'Таймаут при отриманні місцезнаходження. Спробуйте ще раз.';
                     console.error('❌ Таймаут при отриманні місцезнаходження');
                     break;
                 default:
+                    errorMessage = 'Виникла помилка при отриманні місцезнаходження.';
                     console.error('❌ Невідома помилка геолокації:', error.message);
                     break;
             }
@@ -372,9 +374,109 @@ function getCurrentLocation() {
                 map.setView([50.4501, 30.5234], 10);
                 console.log('🗺️ Показано карту з центром у Києві (fallback)');
             }
+            
+            // Видаляємо стан завантаження
+            if (locationBtn) {
+                locationBtn.classList.remove('loading');
+                locationBtn.disabled = false;
+            }
+            
+            // Показуємо повідомлення про помилку
+            showLocationError(errorMessage);
         },
         options
     );
+}
+
+/**
+ * Показ повідомлення про успіх геолокації
+ */
+function showLocationSuccess(message) {
+    const notification = createNotification(message, 'success');
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Показ повідомлення про помилку геолокації
+ */
+function showLocationError(message) {
+    const notification = createNotification(message, 'error');
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 4000);
+}
+
+/**
+ * Створення елементу повідомлення
+ */
+function createNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `location-notification ${type}`;
+    notification.textContent = message;
+    
+    // Додаємо стилі через JavaScript
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#2ecc71' : '#e74c3c'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        z-index: 10000;
+        max-width: 300px;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    `;
+    
+    // Додаємо клас для анімації
+    notification.classList.add('location-notification');
+    
+    return notification;
+}
+
+/**
+ * Ініціалізація секції місцезнаходження
+ */
+function initLocationSection() {
+    // Ініціалізуємо карту після завантаження бібліотеки Leaflet
+    if (typeof L !== 'undefined') {
+        initMap();
+        console.log('🗺️ Секція місцезнаходження ініціалізована');
+        
+        // НЕ автоматично отримуємо місцезнаходження - тепер тільки по кліку на кнопку
+        console.log('🎯 Кнопка геолокації готова до використання');
+    } else {
+        console.error('❌ Бібліотека Leaflet не завантажена');
+    }
 }
 
 /**
@@ -710,4 +812,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Ініціалізація контактної форми
     initContactForm();
+    
+    // Додаємо стилі для повідомлень
+    const style = document.createElement('style');
+    style.textContent = `
+        .location-notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    `;
+    document.head.appendChild(style);
 });
