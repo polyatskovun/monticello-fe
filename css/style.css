@@ -758,7 +758,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    z-index: 10;
+    z-index: 1000;
     color: #667eea;
 }
 
@@ -799,6 +799,7 @@ body {
         top: 15px;
         right: 15px;
         border-radius: 8px;
+        z-index: 1000;
     }
     
     .location-btn svg {
@@ -823,6 +824,7 @@ body {
         top: 12px;
         right: 12px;
         border-radius: 6px;
+        z-index: 1000;
     }
     
     .location-btn svg {
