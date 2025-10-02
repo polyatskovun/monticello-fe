@@ -142,11 +142,12 @@ body {
 
 .hero-indicators {
     position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    gap: 15px;
     z-index: 3;
 }
 
@@ -235,7 +236,7 @@ body {
     transform: translateY(2px);
 }
 
-.what-we-do {
+.projects {
     padding: 100px 0;
     background: #f8f9fa;
     position: relative;
@@ -1043,6 +1044,27 @@ body {
         height: 18px;
     }
 }
+@media (max-width: 1024px) and (min-width: 768px) {
+
+    .hero-title {
+        font-size: 3.5rem;
+        letter-spacing: 6px;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+        letter-spacing: 2.5px;
+    }
+
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        width: 100%;
+    }
+}
+
 
 @media (max-width: 768px) {
     .hero-title {
@@ -1058,57 +1080,31 @@ body {
     .navbar {
         flex-direction: column;
         gap: 20px;
+        padding: 0 15px;
     }
     
     .nav-menu {
-        gap: 20px;
-    }
-    
-    .service-item,
-    .service-item.reverse {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        gap: 15px;
         text-align: center;
-        gap: 40px;
-    }
-    
-    .service-visual {
-        height: 350px;
-        order: 1;
-    }
-    
-    .service-content {
+        width: 100%;
         order: 2;
     }
     
-    .geometric-bg-blue,
-    .geometric-bg-purple {
-        width: 200px;
-        height: 150px;
-    }
-    
-    .service-image {
-        width: 280px;
-        height: 300px;
-    }
-    
-    .news-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-        letter-spacing: 2px;
+    .nav-menu a {
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 16px;
     }
     
     .social-links {
-        order: -1;
+        order: 3;
+        gap: 15px;
     }
     
-    .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 200px);
-        gap: 15px;
+    .hero-indicators {
+        right: 20px;
+        gap: 12px;
     }
 }
 
@@ -1118,25 +1114,39 @@ body {
         letter-spacing: 2px;
     }
     
-    .service-content {
-        padding: 20px;
+    .navbar {
+        padding: 0 10px;
+        gap: 15px;
     }
     
-    .service-title {
-        font-size: 1.8rem;
+    .nav-menu {
+        gap: 12px;
+        order: 2;
     }
     
-    .container {
-        padding: 0 15px;
+    .nav-menu a {
+        font-size: 14px;
+        padding: 8px 0;
     }
     
-    .gallery-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(5, 250px);
+    .social-links {
+        gap: 12px;
+        order: 3;
     }
     
-    .gallery {
-        padding: 60px 0;
+    .social-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .hero-indicators {
+        right: 15px;
+        gap: 10px;
+    }
+    
+    .hero-indicator {
+        width: 10px;
+        height: 10px;
     }
 }
 
