@@ -234,14 +234,14 @@ function initNavigation() {
  * Ініціалізація соціальних посилань з логуванням
  */
 function initSocialLinks() {
-    const socialLinks = document.querySelectorAll('.social-link');
+    const socialLinks = document.querySelectorAll('.social-link, .footer-social-link');
     
     socialLinks.forEach((link, index) => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             
             const socialNames = ['Facebook', 'Twitter', 'Instagram'];
-            const socialName = socialNames[index] || 'Social Media';
+            const socialName = socialNames[index % 3] || 'Social Media';
             
             console.log(`🔗 Клік по ${socialName}`);
             
@@ -524,6 +524,170 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
 }
 
 /**
+ * Ініціалізація контактної форми
+ */
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    
+    if (!form || !nameInput || !emailInput) {
+        console.error('❌ Елементи контактної форми не знайдено');
+        return;
+    }
+    
+    // Додаємо обробники подій для валідації в реальному часі
+    nameInput.addEventListener('blur', () => validateField(nameInput, 'name'));
+    emailInput.addEventListener('blur', () => validateField(emailInput, 'email'));
+    
+    // Обробка відправки форми
+    form.addEventListener('submit', handleFormSubmit);
+    
+    console.log('📝 Контактна форма ініціалізована');
+}
+
+/**
+ * Валідація окремого поля
+ */
+function validateField(input, type) {
+    const value = input.value.trim();
+    let isValid = true;
+    let errorMessage = '';
+    
+    // Видаляємо попередні помилки
+    input.classList.remove('error');
+    removeErrorMessage(input);
+    
+    if (!value) {
+        isValid = false;
+        errorMessage = `${type === 'name' ? 'Ім\'я' : 'Email'} обов'язкове для заповнення`;
+    } else if (type === 'name' && value.length < 2) {
+        isValid = false;
+        errorMessage = 'Ім\'я повинно містити мінімум 2 символи';
+    } else if (type === 'email' && !isValidEmail(value)) {
+        isValid = false;
+        errorMessage = 'Введіть коректний email адрес';
+    }
+    
+    if (!isValid) {
+        input.classList.add('error');
+        showErrorMessage(input, errorMessage);
+    }
+    
+    return isValid;
+}
+
+/**
+ * Перевірка валідності email
+ */
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+/**
+ * Показ повідомлення про помилку
+ */
+function showErrorMessage(input, message) {
+    let errorElement = input.parentNode.querySelector('.error-message');
+    
+    if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        input.parentNode.appendChild(errorElement);
+    }
+    
+    errorElement.textContent = message;
+    errorElement.classList.add('show');
+}
+
+/**
+ * Видалення повідомлення про помилку
+ */
+function removeErrorMessage(input) {
+    const errorElement = input.parentNode.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.classList.remove('show');
+        setTimeout(() => {
+            if (errorElement.parentNode) {
+                errorElement.parentNode.removeChild(errorElement);
+            }
+        }, 300);
+    }
+}
+
+/**
+ * Показ повідомлення про успіх
+ */
+function showSuccessMessage(form) {
+    let successElement = form.querySelector('.success-message');
+    
+    if (!successElement) {
+        successElement = document.createElement('div');
+        successElement.className = 'success-message';
+        form.insertBefore(successElement, form.firstChild);
+    }
+    
+    successElement.textContent = 'Дякуємо! Ваше повідомлення надіслано успішно.';
+    successElement.classList.add('show');
+    
+    // Видаляємо повідомлення через 5 секунд
+    setTimeout(() => {
+        successElement.classList.remove('show');
+        setTimeout(() => {
+            if (successElement.parentNode) {
+                successElement.parentNode.removeChild(successElement);
+            }
+        }, 300);
+    }, 5000);
+}
+
+/**
+ * Обробка відправки форми
+ */
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const nameInput = form.querySelector('#name');
+    const emailInput = form.querySelector('#email');
+    const submitBtn = form.querySelector('.submit-btn');
+    
+    // Валідуємо всі поля
+    const isNameValid = validateField(nameInput, 'name');
+    const isEmailValid = validateField(emailInput, 'email');
+    
+    if (isNameValid && isEmailValid) {
+        // Показуємо стан завантаження
+        submitBtn.textContent = 'ВІДПРАВЛЯЄТЬСЯ...';
+        submitBtn.disabled = true;
+        
+        // Симуляція відправки (замініть на реальний API)
+        setTimeout(() => {
+            console.log('📧 Форма відправлена:', {
+                name: nameInput.value,
+                email: emailInput.value,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Показуємо повідомлення про успіх
+            showSuccessMessage(form);
+            
+            // Очищуємо форму
+            form.reset();
+            
+            // Відновлюємо кнопку
+            submitBtn.textContent = 'SUBMIT';
+            submitBtn.disabled = false;
+            
+            console.log('✅ Контактна форма успішно відправлена');
+        }, 2000);
+    } else {
+        console.log('❌ Форма містить помилки валідації');
+    }
+}
+
+/**
  * Ініціалізація після завантаження DOM
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -543,4 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Ініціалізація секції місцезнаходження
     setTimeout(initLocationSection, 100); // Невелика затримка для завантаження Leaflet
+    
+    // Ініціалізація контактної форми
+    initContactForm();
 });
