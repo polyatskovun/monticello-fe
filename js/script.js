@@ -819,10 +819,114 @@ function handleFormSubmit(event) {
 }
 
 /**
+ * Ініціалізація ротації фону героя
+ */
+function initHeroBackgroundRotation() {
+    const hero = document.querySelector('.hero');
+    const indicators = document.querySelectorAll('.hero-indicator');
+    
+    if (!hero || indicators.length === 0) {
+        console.error('❌ Елементи героя не знайдено');
+        return;
+    }
+    
+    const backgrounds = [
+        '../assets/img/bg1.png',
+        '../assets/img/gallery1.png',
+        '../assets/img/gallery2.png',
+        '../assets/img/gallery3.png',
+        '../assets/img/gallery4.png'
+    ];
+    
+    let currentIndex = 0;
+    let rotationInterval;
+    
+    /**
+     * Зміна фону героя
+     */
+    function changeBackground(index) {
+        if (index < 0 || index >= backgrounds.length) return;
+        
+        const gradient = 'linear-gradient(135deg, rgba(116, 185, 255, 0.8) 0%, rgba(102, 126, 234, 0.8) 50%, rgba(118, 75, 162, 0.8) 100%)';
+        const newBackground = `${gradient}, url('${backgrounds[index]}') center/cover no-repeat`;
+        
+        hero.style.background = newBackground;
+        currentIndex = index;
+        
+        // Оновлення індикаторів
+        indicators.forEach((indicator, i) => {
+            indicator.classList.toggle('active', i === index);
+        });
+        
+        console.log(`🖼️ Фон героя змінено на: ${backgrounds[index]}`);
+    }
+    
+    /**
+     * Автоматична ротація фону
+     */
+    function startAutoRotation() {
+        rotationInterval = setInterval(() => {
+            const nextIndex = (currentIndex + 1) % backgrounds.length;
+            changeBackground(nextIndex);
+        }, 3000);
+        
+        console.log('🔄 Автоматична ротація фону запущена (кожні 3 секунди)');
+    }
+
+    function stopAutoRotation() {
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
+            console.log('⏸️ Автоматична ротація фону зупинена');
+        }
+    }
+    
+    
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            changeBackground(index);
+            console.log(`Ручна зміна фону на індекс: ${index}`);
+        });
+        
+        indicator.addEventListener('mouseenter', () => {
+            if (!indicator.classList.contains('active')) {
+                indicator.style.transform = 'scale(1.1)';
+                indicator.style.background = 'rgba(255, 255, 255, 0.7)';
+            }
+        });
+        
+        indicator.addEventListener('mouseleave', () => {
+            if (!indicator.classList.contains('active')) {
+                indicator.style.transform = '';
+                indicator.style.background = '';
+            }
+        });
+    });
+    
+    
+    // Запускаємо автоматичну ротацію
+    startAutoRotation();
+    
+    console.log('🎬 Ротація фону героя ініціалізована з індикаторами');
+    
+    // Повертаємо об'єкт з методами управління
+    return {
+        changeBackground,
+        startAutoRotation,
+        stopAutoRotation,
+        getCurrentIndex: () => currentIndex,
+        getBackgrounds: () => backgrounds
+    };
+}
+
+/**
  * Ініціалізація після завантаження DOM
  */
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Monticello website loaded successfully');
+    
+    // Ініціалізація ротації фону героя
+    initHeroBackgroundRotation();
     
     // Додаткова функціональність для навігації
     initNavigation();
