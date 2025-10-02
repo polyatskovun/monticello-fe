@@ -762,12 +762,73 @@ function initHeroBackgroundRotation() {
     };
 }
 
+function initMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+
+    if (!mobileMenuToggle || !navMenu) {
+        console.error('❌ Елементи мобільного меню не знайдено');
+        return;
+    }
+
+    // Toggle mobile menu
+    mobileMenuToggle.addEventListener('click', function() {
+        mobileMenuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        
+        // Prevent body scroll when menu is open
+        if (navMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+            console.log('📱 Мобільне меню відкрито');
+        } else {
+            document.body.style.overflow = '';
+            console.log('📱 Мобільне меню закрито');
+        }
+    });
+
+    // Close menu when clicking on nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileMenuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            console.log('📱 Мобільне меню закрито після кліку на посилання');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (navMenu.classList.contains('active') && 
+            !navMenu.contains(e.target) && 
+            !mobileMenuToggle.contains(e.target)) {
+            mobileMenuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            console.log('📱 Мобільне меню закрито при кліку поза меню');
+        }
+    });
+
+    // Close menu on window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            mobileMenuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    console.log('📱 Мобільне меню ініціалізовано');
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('🚀 Monticello website loaded successfully');
 
     initHeroBackgroundRotation();
 
     initNavigation();
+
+    initMobileMenu();
 
     initSocialLinks();
 
