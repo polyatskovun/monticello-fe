@@ -722,7 +722,7 @@ body {
 }
 
 .location {
-    padding: 100px 0 50px 0;
+    padding: 100px 0 0 0;
     background: #f8f9fa;
     position: relative;
 }
@@ -833,7 +833,7 @@ body {
 /* Footer Section */
 .footer {
     background: linear-gradient(135deg, #74b9ff 0%, #667eea 50%, #764ba2 100%);
-    padding: 60px 0;
+    padding: 500px 0 50px 0;
     color: white;
     position: relative;
     overflow: hidden;
@@ -1105,9 +1105,11 @@ body {
 .contact {
     padding: 0;
     background: #f8f9fa;
-    position: relative;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-25%);
     z-index: 10000;
-    margin-top: -250px;
+    border-radius: 10px;
 }
 
 .contact .container {
